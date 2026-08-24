@@ -11,5 +11,5 @@ authors:
     affiliation: Earthquake Research Institute, The University of Tokyo, Japan
 version: 1.0.0
 date-released: 2026-08-24
-repository-code: "REPLACE_WITH_GITHUB_REPOSITORY_URL"
+repository-code: "https://github.com/pingyuchang/pyTRACMT"
 license: MIT
