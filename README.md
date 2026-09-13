@@ -22,7 +22,14 @@
 
 ## Version
 
-SoftwareX reference release: **v1.0.0** (prepared from the TRACMT Source-Aligned Edition).
+Current SoftwareX reference release: **V1.0.1**
+
+Release: https://github.com/pingyuchang/pyTRACMT/releases/tag/V1.0.1
+
+V1.0.1 adds automated software testing, GitHub Actions continuous
+integration, explicit third-party licensing documentation, and a transparent
+human-readable representation of the TRACMT-derived Tukey biweight parameter
+table with SHA-256 integrity verification.
 
 ## Requirements
 
@@ -85,7 +92,9 @@ Please cite the associated SoftwareX article when available and the relevant TRA
 
 ## License
 
-pyTRACMT v1.0.0 is released under the **MIT License**. See [`LICENSE`](LICENSE).
+pyTRACMT V1.0.1 source code is released under the MIT License.
+The TRACMT-derived Tukey biweight parameter table is separately documented
+in THIRD_PARTY_NOTICES.md with its upstream BSD-3-Clause attribution. See [`LICENSE`](LICENSE).
 
 ## Validation-data permission
 
