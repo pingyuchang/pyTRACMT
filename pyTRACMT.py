@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 pyTRACMT Professional v11 (TRACMT Source-Aligned Edition)
+Release version: 1.0.1
 ======================================================
 
 Integrated Python engine + English GUI/CLI for TRACMT-style MT processing.
@@ -23,10 +24,11 @@ This is a Python reconstruction guided by the TRACMT source structure and
 published algorithm. It is intended to be numerically compatible in workflow and
 file format. V8 adds the C++ std::mt19937_64 engine, strict full-refit bootstrap, and LAPACK-style complex solves. V10 uses the complete TRACMT Tukey b/c table and exact C++ interpolation and scale update. In this SoftwareX revision the table is stored as an inspectable plain-text CSV with BSD-3-Clause attribution and SHA-256 integrity validation. V11 additionally matches short-section zero padding, removes unintended segment demeaning, uses the TRACMT seed 1234 mt19937_64 candidate stream, and reproduces the C++ ordinary-RR coherence rejection definition. Bit identity still depends on using the same TRACMT build, compiler standard library, input precision, and preprocessing settings.
 
-Author: generated for Ping-Yu Chang
+Lead developer: Ping-Yu Chang
+Scientific reference implementation: TRACMT by Yoshiya Usui
 """
 from __future__ import annotations
-
+__version__ = "1.0.1"
 import dataclasses as dc
 import math
 import os
