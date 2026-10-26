@@ -1,101 +1,70 @@
-# pyTRACMT
+# pyTRACMT v1.1.0
 
-**pyTRACMT** is an open-source Python implementation of the principal TRACMT magnetotelluric (MT) processing workflow with an integrated graphical user interface (GUI) and command-line interface. The source-aligned implementation is intended to reproduce the principal numerical behavior, processing philosophy, and file workflow of TRACMT while providing a more accessible and extensible Python environment.
+Open-source Python GUI/CLI for magnetotelluric (MT) time-series processing following the principal TRACMT workflow. The V1.1 release adds MTH5 input/calibration routing, Phoenix full-system CTS handling for appropriate raw-count inputs, horizontal tensor rotation, and No-RR processing in addition to ordinary remote-reference (RR) and robust RRMS options.
 
-## Main capabilities
+> **Validation notice:** Instrument response correction and physical units depend on correct source metadata, calibration files, electrode geometry, and channel orientation. Check results against independently validated reference data before scientific interpretation. The bundled automated tests cover selected numerical components, not end-to-end instrument calibration or all field configurations.
 
-- Ordinary remote-reference (RR) transfer-function estimation
-- Robust multivariate remote-reference / RRMS processing
-- Sequential robust M-estimation
-- Standard and robust prewhitening
-- Robust time-domain spike filtering
-- Squared-coherence-based spectral segment rejection
-- High-pass, low-pass, and notch filtering
-- Frequency-domain sensor calibration
-- Segment-based FFT spectral processing
-- Zxx, Zxy, Zyx, and Zyy impedance estimation
-- Apparent resistivity and phase calculation
-- Parametric, bootstrap, jackknife, robust-bootstrap, and strict/full-refit bootstrap uncertainty estimation
-- TRACMT-style `param.dat`, log, and convergence output
-- CSV and basic EDI export
-- GUI-based configuration, time-series preview, response plotting, uncertainty/error-bar display, and PNG export
+## Install
 
-## Version
-
-Current SoftwareX reference release: **V1.0.1**
-
-Release: https://github.com/pingyuchang/pyTRACMT/releases/tag/V1.0.1
-
-V1.0.1 adds automated software testing, GitHub Actions continuous
-integration, explicit third-party licensing documentation, and a transparent
-human-readable representation of the TRACMT-derived Tukey biweight parameter
-table with SHA-256 integrity verification.
-
-## Requirements
-
-Recommended environment:
-
-- Python 3.10 or 3.11
-- NumPy
-- Pandas
-- SciPy
-- Matplotlib
-- Tkinter (normally included with Python)
-- OpenPyXL (optional/supporting workflows)
-
-Install Python dependencies with:
+Recommended: Python 3.10 or 3.11. In a dedicated environment:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-## Run the GUI
+On some systems, Tkinter must be installed separately through the operating system or Python distribution.
 
-```bash
-python pytracmt.py
+## Required directory layout (GUI and CLI)
+
+The external Tukey table is a **required release asset**. Download/extract the complete repository or release package and keep the following structure:
+
+```text
+pyTRACMT/
+├── pyTRACMT.py
+└── data/
+    └── tukey_biweight_parameters.csv
 ```
 
-## Command-line execution
+The CSV is resolved relative to `pyTRACMT.py`, **not** the current working directory. It is loaded automatically when needed; no GUI file selection is required. Do not rename, edit, reformat, or move it. A missing file or SHA-256 mismatch raises an error during table loading. This requirement applies to both GUI and CLI usage.
+
+## Run
 
 ```bash
-python pytracmt.py path/to/param.dat path/to/output_folder
+python pyTRACMT.py
 ```
 
-## Reproducibility and SoftwareX validation
+For command-line processing using an existing TRACMT-style parameter file:
 
-The repository contains three TRACMT comparison configurations based on the `sample_Usui` dataset:
+```bash
+python pyTRACMT.py param.dat
+```
 
-- non-robust remote reference
-- ordinary robust remote reference
-- RRMS
+## Input and processing
 
-See [`examples/sample_Usui/README.md`](examples/sample_Usui/README.md) for the dataset layout and reproduction procedure. The original TRACMT reference outputs used for comparison are included under `validation/TRACMT_reference_results/`.
+- Separate calibrated single-channel time-series files; choose the correct input-unit mode.
+- MTH5 run selection and conditional correction of unapplied instrument response stages.
+- Phoenix raw-count MTH5 with a matching full-system CTS response, when applicable.
+- No-RR, ordinary RR, and robust RRMS modes; independent remote magnetic channels are required for RR/RRMS.
+- Spectral segmentation, optional preprocessing, impedance tensor estimation, uncertainty estimation, plotting, and export.
 
-The raw validation time series are distributed separately as the GitHub Release asset `sample_Usui_data.zip` because the uncompressed text files exceed ordinary GitHub per-file limits.
+See [the V1.1 user manual](docs/pyTRACMT_User_Manual_V1.1.docx) for setup, calibration limitations, rotation conventions, and troubleshooting.
 
-## Documentation
+## Tukey biweight table
 
-Additional installation and GUI documentation is available in the `docs/` directory.
+The TRACMT-derived numeric table is stored at `data/tukey_biweight_parameters.csv` and checked against a pinned SHA-256 digest before loading. **Keep the `data/` folder beside `pyTRACMT.py`**. The program does not execute the CSV. See [third-party notices](THIRD_PARTY_NOTICES.md) and [security notes](SECURITY.md).
 
-## Scientific references
+## Tests
 
-Please cite the associated SoftwareX article when available and the relevant TRACMT methodology papers:
+```bash
+python -m pytest -q
+```
 
-1. Usui, Y. (2024). Prewhitening of magnetotelluric data using a robust filter and robust PARCOR. *Bulletin of the Earthquake Research Institute, University of Tokyo*, 99, 1–20.
-2. Usui, Y., Uyeshima, M., Sakanaka, S., Hashimoto, T., Ichiki, M., Kaida, T., Yamaya, Y., Ogawa, Y., Masuda, M., & Akiyama, T. (2024). New robust remote reference estimator using robust multivariate linear regression. *Geophysical Journal International*, 238, 943–959.
-3. Usui, Y. et al. (2025). Application of the fast and robust bootstrap method to the uncertainty analysis of the magnetotelluric transfer function. *Geophysical Journal International*, 242, ggaf162.
+The included tests cover selected Tukey-table and processing components. GitHub Actions runs the tests on Python 3.10 and 3.11. Passing tests is not proof of physical calibration accuracy.
 
-## Authors
+## License and attribution
 
-- Ping-Yu Chang — Department of Earth Sciences, National Central University, Taiwan
-- Yoshiya Usui — Earthquake Research Institute, The University of Tokyo, Japan
+pyTRACMT code is distributed under the MIT License; the TRACMT-derived Tukey table has upstream BSD-3-Clause attribution documented in `THIRD_PARTY_NOTICES.md`. Original TRACMT: Yoshiya Usui.
 
-## License
+## Release history
 
-pyTRACMT V1.0.1 source code is released under the MIT License.
-The TRACMT-derived Tukey biweight parameter table is separately documented
-in THIRD_PARTY_NOTICES.md with its upstream BSD-3-Clause attribution. See [`LICENSE`](LICENSE).
-
-## Validation-data permission
-
-The `sample_Usui` validation dataset was provided by Yoshiya Usui and is distributed with his permission for pyTRACMT validation and reproducibility. See `NOTICE.md`.
+See [CHANGELOG.md](CHANGELOG.md) and [v1.1.0 release notes](RELEASE_NOTES_v1.1.0.md). Previous v1.0.x releases remain available in repository history/tags.
